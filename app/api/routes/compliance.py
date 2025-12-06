@@ -8,17 +8,18 @@ Implements:
 - GET /compliance/data-retention-report (GDPR Article 5 - Storage Limitation)
 """
 
-from typing import Annotated
-from fastapi import APIRouter, HTTPException, Query, Depends
 from datetime import datetime, timedelta
-from sqlmodel import select, Session
+from typing import Annotated
 
-from app.api.deps import SessionDep
-from app.core.security import get_current_active_user, TokenData
+from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlmodel import Session, select
+
+from app.api.dependencies import SessionDep
 from app.core.config import settings
 from app.core.logging import get_logger
-from app.models.data_inventory import DataInventory, DataCategory
-from app.models.employee_data_access import EmployeeDataAccess, DataRetention
+from app.core.security import TokenData, get_current_active_user
+from app.models.data_inventory import DataCategory, DataInventory
+from app.models.employee_data_access import DataRetention, EmployeeDataAccess
 
 logger = get_logger(__name__)
 
