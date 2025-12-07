@@ -12,10 +12,9 @@ from datetime import datetime, timedelta
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlmodel import Session, select
+from sqlmodel import select
 
 from app.api.dependencies import SessionDep
-from app.core.config import settings
 from app.core.logging import get_logger
 from app.core.security import TokenData, get_current_active_user
 from app.models.data_inventory import DataCategory, DataInventory
@@ -217,7 +216,7 @@ async def get_employee_data_about_me(
             "employees_with_access_to_your_data": len(
                 session.exec(
                     select(EmployeeDataAccess).where(
-                        EmployeeDataAccess.is_active == True
+                        EmployeeDataAccess.is_active.is_(True)
                     )
                 ).all()
             )
