@@ -4,12 +4,13 @@ Implements token validation, role/permission extraction for Asgardeo.
 """
 
 import json
-from typing import Annotated, Any
 from datetime import datetime, timedelta
+from typing import Annotated, Any
+
 import jwt
-from jwt import PyJWKClient
 from fastapi import Depends, HTTPException, status
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from jwt import PyJWKClient
 from pydantic import BaseModel
 
 from app.core.config import settings
@@ -22,7 +23,7 @@ security = HTTPBearer()
 
 # JWKS client for fetching and caching public keys
 jwks_client = PyJWKClient(
-    uri=settings.JWKS_URL,
+    uri=settings.jwks_url,
     cache_keys=True,
     max_cached_keys=16,
 )

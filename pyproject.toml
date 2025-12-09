@@ -1,7 +1,7 @@
 [project]
-name = "fastapi-template"
-version = "0.1.0"
-description = "Add your description here"
+name = "compliance-service"
+version = "1.0.0"
+description = "HRMS Compliance Service for GDPR compliance, data inventory, and retention management"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
@@ -13,5 +13,7 @@ dependencies = [
     "pyjwt>=2.8.0",
     "cryptography>=41.0.0",
     "httpx>=0.25.0",
+    "confluent-kafka>=2.3.0",
+    "redis>=5.0.0",
     "urllib3>=2.6.0",
 ]

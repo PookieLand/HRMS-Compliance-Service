@@ -1,12 +1,20 @@
 FROM python:3.13-alpine3.22 AS builder
 
-# Install build dependencies only in builder stage
-RUN apk add --no-cache \
-	pkgconfig \
-	gcc \
-	musl-dev \
-	mariadb-dev \
-	mariadb-connector-c-dev
+# Install dependencies for (mysqlclient build)
+RUN apk add --no-cache pkgconfig gcc musl-dev mariadb-dev mariadb-connector-c-dev
+
+# Install build dependencies for confluent-kafka (librdkafka v2.12.1+) and mysqlclient
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    pkg-config \
+    default-libmysqlclient-dev \
+    curl \
+    gnupg \
+    && curl -fsSL https://packages.confluent.io/deb/7.9/archive.key | gpg --dearmor -o /usr/share/keyrings/confluent-archive-keyring.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/confluent-archive-keyring.gpg] https://packages.confluent.io/deb/7.9 stable main" > /etc/apt/sources.list.d/confluent.list \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends librdkafka-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
@@ -15,7 +23,7 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 COPY . /app
 WORKDIR /app
 
-# Install the application dependencies using uv sync
+# Install the application dependencies
 RUN uv sync --frozen
 
 # Strip binaries to reduce size
