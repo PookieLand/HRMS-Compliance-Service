@@ -742,7 +742,7 @@ TOPIC_HANDLERS = {
     KafkaTopics.USER_SUSPENDED: handle_user_updated_event,
     KafkaTopics.USER_ACTIVATED: handle_user_updated_event,
     KafkaTopics.USER_ROLE_CHANGED: handle_user_updated_event,
-    KafkaTopics.USER_ONBOARDING_INITIATED: handle_user_created_event,
+    # USER_ONBOARDING_INITIATED removed - no user_id exists at initiation stage
     KafkaTopics.USER_ONBOARDING_COMPLETED: handle_user_updated_event,
     KafkaTopics.USER_ONBOARDING_FAILED: handle_generic_event,
     # Employee events
