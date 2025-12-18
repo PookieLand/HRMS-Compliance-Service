@@ -150,7 +150,7 @@ app.add_middleware(
 
 
 # Include routers
-app.include_router(compliance_router, prefix="/api/v1")
+app.include_router(compliance_router, prefix="/api/v1/compliance")
 
 
 @app.get("/health", tags=["health"])
